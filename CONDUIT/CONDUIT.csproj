@@ -324,9 +324,9 @@
       <Project>{ec831037-1561-4bd3-8827-d009aa5323ae}</Project>
       <Name>CONDUIT.DataLayer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\UnityCL\UnityCL.csproj">
-      <Project>{1d7256ff-40d4-4683-91ce-288ed729fd13}</Project>
-      <Name>UnityCL</Name>
+    <ProjectReference Include="..\CONDUIT.UnityCL\CONDUIT.UnityCL.csproj">
+      <Project>{3b8f60c9-e1be-4f30-958f-3a287a31cde2}</Project>
+      <Name>CONDUIT.UnityCL</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
