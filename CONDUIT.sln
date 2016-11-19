@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CONDUIT.PCL", "CONDUIT.PCL\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiTest", "ApiTest\ApiTest.csproj", "{761582ED-4DBF-4F11-BCBA-86DE3290C1B0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityCL", "UnityCL\UnityCL.csproj", "{1D7256FF-40D4-4683-91CE-288ED729FD13}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{761582ED-4DBF-4F11-BCBA-86DE3290C1B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{761582ED-4DBF-4F11-BCBA-86DE3290C1B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{761582ED-4DBF-4F11-BCBA-86DE3290C1B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D7256FF-40D4-4683-91CE-288ED729FD13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D7256FF-40D4-4683-91CE-288ED729FD13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D7256FF-40D4-4683-91CE-288ED729FD13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D7256FF-40D4-4683-91CE-288ED729FD13}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
