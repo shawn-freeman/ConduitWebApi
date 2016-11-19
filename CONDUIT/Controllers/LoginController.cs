@@ -6,6 +6,8 @@ using System.Net.Http;
 using System.Web.Http;
 
 using CONDUIT.DataLayer;
+using Newtonsoft.Json;
+using UnityCL;
 
 namespace CONDUIT.Controllers
 {
@@ -26,13 +28,14 @@ namespace CONDUIT.Controllers
 
         // POST api/<controller>
         [HttpPost]
-        public bool Post(int userId, string currentPassword, string newPassword)
+        public bool Post(string obj)
         {
             using (var entities = new CONDUIT_Entities())
             {
                 try
                 {
-                    entities.changePasswordSP(userId, currentPassword, newPassword);
+                    var changeRequest = JsonConvert.DeserializeObject<ChangePasswordRequest>(obj);
+                    entities.changePasswordSP(changeRequest.UserId, changeRequest.CurrentPassword, changeRequest.NewPassword);
                     return true;
                 }
                 catch (Exception)

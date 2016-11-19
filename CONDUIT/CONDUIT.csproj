@@ -324,6 +324,10 @@
       <Project>{ec831037-1561-4bd3-8827-d009aa5323ae}</Project>
       <Name>CONDUIT.DataLayer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\UnityCL\UnityCL.csproj">
+      <Project>{1d7256ff-40d4-4683-91ce-288ed729fd13}</Project>
+      <Name>UnityCL</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

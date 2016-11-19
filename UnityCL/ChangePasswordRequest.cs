@@ -10,7 +10,7 @@ namespace UnityCL
     public class ChangePasswordRequest
     {
         public int UserId { get; set; }
-        public int CurrentPassword { get; set; }
-        public int NewPassword { get; set; }
+        public string CurrentPassword { get; set; }
+        public string NewPassword { get; set; }
     }
 }
