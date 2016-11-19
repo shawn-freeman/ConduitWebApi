@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace UnityCL
+namespace CONDUIT.UnityCL
 {
     [Serializable]
     public class ChangePasswordRequest
