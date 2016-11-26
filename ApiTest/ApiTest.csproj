@@ -34,6 +34,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -49,11 +53,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CONDUIT.PCL\CONDUIT.PCL.csproj">
       <Project>{9f63bc6d-fd20-44d4-8a26-fec59b0a92ca}</Project>
       <Name>CONDUIT.PCL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CONDUIT.UnityCL\CONDUIT.UnityCL.csproj">
+      <Project>{3b8f60c9-e1be-4f30-958f-3a287a31cde2}</Project>
+      <Name>CONDUIT.UnityCL</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

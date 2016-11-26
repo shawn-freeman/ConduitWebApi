@@ -51,6 +51,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="checkLoginSP_Result.cs">
+      <DependentUpon>CONDUIT_EFModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Class1.cs" />
     <Compile Include="TEST_CONDUIT_DBContext.cs" />
     <Compile Include="CONDUIT_EFModel.Context.cs">

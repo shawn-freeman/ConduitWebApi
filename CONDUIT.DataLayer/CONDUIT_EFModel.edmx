@@ -15,6 +15,7 @@
           <Property Name="Active" Type="bit" Nullable="false" />
           <Property Name="Username" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Email" Type="nvarchar(max)" />
         </EntityType>
         <Function Name="changePasswordSP" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserID" Type="int" Mode="In" />
@@ -42,10 +43,11 @@
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <Property Name="Username" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityContainer Name="CONDUIT_Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Users" EntityType="Self.User" />
-          <FunctionImport Name="checkLoginSP" ReturnType="Collection(Int32)">
+          <FunctionImport Name="checkLoginSP" ReturnType="Collection(DEVModel.checkLoginSP_Result)">
             <Parameter Name="Username" Mode="In" Type="String" />
             <Parameter Name="Password" Mode="In" Type="String" />
           </FunctionImport>
@@ -55,6 +57,15 @@
             <Parameter Name="NewPassword" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
+        <ComplexType Name="checkLoginSP_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="DateTime" Name="Created" Nullable="false" Precision="23" />
+          <Property Type="DateTime" Name="Modified" Nullable="false" Precision="23" />
+          <Property Type="Boolean" Name="Active" Nullable="false" />
+          <Property Type="String" Name="Username" Nullable="false" />
+          <Property Type="String" Name="Password" Nullable="false" />
+          <Property Type="String" Name="Email" Nullable="true" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -64,6 +75,7 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="DEVModel.User">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Created" ColumnName="Created" />
                 <ScalarProperty Name="Modified" ColumnName="Modified" />
@@ -73,7 +85,19 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="checkLoginSP" FunctionName="DEVModel.Store.checkLoginSP" />
+          <FunctionImportMapping FunctionImportName="checkLoginSP" FunctionName="DEVModel.Store.checkLoginSP" >
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DEVModel.checkLoginSP_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Modified" ColumnName="Modified" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="changePasswordSP" FunctionName="DEVModel.Store.changePasswordSP" />
         </EntityContainerMapping>
       </Mapping>

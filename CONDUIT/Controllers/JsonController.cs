@@ -1,25 +1,21 @@
-﻿using System;
+﻿using CONDUIT.DataLayer;
+using CONDUIT.UnityCL.Transports.Account;
+using CONDUIT.UnityCL.Transports.ErrorHandling;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using Newtonsoft.Json;
-
-using CONDUIT.DataLayer;
-using CONDUIT.UnityCL.Transports.Account;
-using CONDUIT.UnityCL.Transports.ErrorHandling;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
-using CONDUIT.UnityCL.Helpers;
 
 namespace CONDUIT.Controllers
 {
-    public class LoginController : ApiController
+    public class JsonController : ApiController
     {
         // GET api/<controller>
         [HttpGet]
-        public byte[] Get(string obj)
+        public string Get(string obj)
         {
             ReturnResult<UserInfo> retResult;
             string retJson;
@@ -38,10 +34,11 @@ namespace CONDUIT.Controllers
                             Username = result.Username,
                             Password = result.Password,
                             Email = !string.IsNullOrEmpty(result.Email) ? result.Email : string.Empty
+
                         };
 
-                        
-                        return ObjectConverter.ObjectToBytes(userInfo);
+                        retResult = new ReturnResult<UserInfo>(userInfo);
+                        retJson = JsonConvert.SerializeObject(userInfo);
                     }
                     else
                     {
@@ -52,8 +49,9 @@ namespace CONDUIT.Controllers
                             Password = string.Empty,
                             Email = string.Empty
                         };
-                        
-                        return ObjectConverter.ObjectToBytes(userInfo);
+
+                        retResult = new ReturnResult<UserInfo>(null, "Could not find user.");
+                        retJson = JsonConvert.SerializeObject(retResult);
                     };
                 }
                 catch (Exception ex)
@@ -65,10 +63,11 @@ namespace CONDUIT.Controllers
                         Password = string.Empty,
                         Email = string.Empty
                     };
-
-                    return ObjectConverter.ObjectToBytes(userInfo);
+                    retResult = new ReturnResult<UserInfo>(null, ex.ToString());
+                    retJson = JsonConvert.SerializeObject(userInfo);
                 }
-                
+
+                return retJson;
             }
         }
 

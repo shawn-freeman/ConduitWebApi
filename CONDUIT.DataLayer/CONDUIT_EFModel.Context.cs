@@ -29,7 +29,7 @@ namespace CONDUIT.DataLayer
     
         public virtual DbSet<User> Users { get; set; }
     
-        public virtual ObjectResult<Nullable<int>> checkLoginSP(string username, string password)
+        public virtual ObjectResult<checkLoginSP_Result> checkLoginSP(string username, string password)
         {
             var usernameParameter = username != null ?
                 new ObjectParameter("Username", username) :
@@ -39,7 +39,7 @@ namespace CONDUIT.DataLayer
                 new ObjectParameter("Password", password) :
                 new ObjectParameter("Password", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("checkLoginSP", usernameParameter, passwordParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<checkLoginSP_Result>("checkLoginSP", usernameParameter, passwordParameter);
         }
     
         public virtual int changePasswordSP(Nullable<int> userID, string currentPassword, string newPassword)

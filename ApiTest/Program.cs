@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 
 using CONDUIT.PCL.Handlers;
+using CONDUIT.UnityCL.Helpers;
+using CONDUIT.UnityCL.Transports.Account;
+using Newtonsoft.Json;
 
 namespace ApiTest
 {
@@ -30,10 +33,19 @@ namespace ApiTest
     {
         public async Task<bool> TryTest()
         {
-            var baseHandler = new Base("http://localhost:57871/api/");
-            var result = await baseHandler.Post<string, bool>($"Login?", "username=shawn&password=Guyver25");
+            var request = new LoginRequest();
+            request.Username = "shawn";
+            request.Password = "guyver";
 
-            return result;
+            //serialize
+            var json = JsonConvert.SerializeObject(request);
+
+            var baseHandler = new Base();
+            var result = await baseHandler.GetAsync<byte[]>($"Login?obj={json}");
+
+            var response = ObjectConverter.BytesToObject<UserInfo>(result);
+
+            return true;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CONDUIT.UnityCL
+namespace CONDUIT.UnityCL.Transports.Account
 {
     [Serializable]
     public class ChangePasswordRequest
