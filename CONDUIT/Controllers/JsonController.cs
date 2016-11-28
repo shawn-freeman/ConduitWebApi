@@ -33,12 +33,12 @@ namespace CONDUIT.Controllers
                             UserId = result.ID,
                             Username = result.Username,
                             Password = result.Password,
-                            Email = !string.IsNullOrEmpty(result.Email) ? result.Email : string.Empty
+                            Email = result.Email
 
                         };
 
                         retResult = new ReturnResult<UserInfo>(userInfo);
-                        retJson = JsonConvert.SerializeObject(userInfo);
+                        retJson = JsonConvert.SerializeObject(retResult);
                     }
                     else
                     {

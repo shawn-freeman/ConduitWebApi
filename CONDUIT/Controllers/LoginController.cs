@@ -19,12 +19,13 @@ namespace CONDUIT.Controllers
     {
         // GET api/<controller>
         [HttpGet]
-        public byte[] Get(string obj)
+        public string Get(string obj)
         {
             ReturnResult<UserInfo> retResult;
             string retJson;
             using (var entities = new CONDUIT_Entities())
             {
+                
                 try
                 {
                     var loginRequest = JsonConvert.DeserializeObject<LoginRequest>(obj);
@@ -37,38 +38,28 @@ namespace CONDUIT.Controllers
                             UserId = result.ID,
                             Username = result.Username,
                             Password = result.Password,
-                            Email = !string.IsNullOrEmpty(result.Email) ? result.Email : string.Empty
+                            Email = result.Email
+
                         };
 
-                        
-                        return ObjectConverter.ObjectToBytes(userInfo);
+                        retResult = new ReturnResult<UserInfo>(userInfo);
+                        retJson = JsonConvert.SerializeObject(retResult);
                     }
                     else
                     {
-                        var userInfo = new UserInfo()
-                        {
-                            UserId = -1,
-                            Username = string.Empty,
-                            Password = string.Empty,
-                            Email = string.Empty
-                        };
-                        
-                        return ObjectConverter.ObjectToBytes(userInfo);
+
+                        retResult = new ReturnResult<UserInfo>(null, "Could not find user.");
+                        retJson = JsonConvert.SerializeObject(retResult);
                     };
                 }
                 catch (Exception ex)
                 {
-                    var userInfo = new UserInfo()
-                    {
-                        UserId = -1,
-                        Username = string.Empty,
-                        Password = string.Empty,
-                        Email = string.Empty
-                    };
 
-                    return ObjectConverter.ObjectToBytes(userInfo);
+                    retResult = new ReturnResult<UserInfo>(null, ex.ToString());
+                    retJson = JsonConvert.SerializeObject(retResult);
                 }
-                
+
+                return retJson;
             }
         }
 
