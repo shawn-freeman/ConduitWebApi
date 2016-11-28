@@ -64,7 +64,7 @@
           <Property Type="Boolean" Name="Active" Nullable="false" />
           <Property Type="String" Name="Username" Nullable="false" />
           <Property Type="String" Name="Password" Nullable="false" />
-          <Property Type="String" Name="Email" Nullable="true" />
+          <Property Type="String" Name="Email" Nullable="false" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
