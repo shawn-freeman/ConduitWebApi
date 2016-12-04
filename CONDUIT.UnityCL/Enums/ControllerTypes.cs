@@ -8,6 +8,7 @@ namespace CONDUIT.UnityCL.Enums
     public enum ControllerTypes
     {
         Login,
+        Account,
         Json
     }
 }

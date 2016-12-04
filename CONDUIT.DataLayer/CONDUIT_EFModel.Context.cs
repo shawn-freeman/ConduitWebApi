@@ -58,5 +58,18 @@ namespace CONDUIT.DataLayer
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("changePasswordSP", userIDParameter, currentPasswordParameter, newPasswordParameter);
         }
+    
+        public virtual ObjectResult<Nullable<int>> checkUserExists(string username, string email)
+        {
+            var usernameParameter = username != null ?
+                new ObjectParameter("Username", username) :
+                new ObjectParameter("Username", typeof(string));
+    
+            var emailParameter = email != null ?
+                new ObjectParameter("Email", email) :
+                new ObjectParameter("Email", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("checkUserExists", usernameParameter, emailParameter);
+        }
     }
 }

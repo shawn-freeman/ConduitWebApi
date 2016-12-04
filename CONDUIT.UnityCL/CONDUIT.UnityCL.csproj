@@ -45,6 +45,7 @@
     <Compile Include="Transports\Account\ChangePasswordRequest.cs" />
     <Compile Include="Enums\ControllerTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Transports\Account\CreateAccountRequest.cs" />
     <Compile Include="Transports\Account\LoginRequest.cs" />
     <Compile Include="Transports\Account\UserInfo.cs" />
     <Compile Include="Transports\ErrorHandling\ReturnResult.cs" />

@@ -33,17 +33,19 @@ namespace ApiTest
     {
         public async Task<bool> TryTest()
         {
-            var request = new LoginRequest();
+            var request = new CreateAccountRequest();
             request.Username = "shawn";
             request.Password = "guyver";
+            request.Email = "abc@outlook.com";
+            request.TestCreation = true;
 
             //serialize
             var json = JsonConvert.SerializeObject(request);
 
             var baseHandler = new Base();
-            var result = await baseHandler.GetAsync<byte[]>($"Login?obj={json}");
 
-            var response = ObjectConverter.BytesToObject<UserInfo>(result);
+
+            var result = await baseHandler.Post<CreateAccountRequest, string>($"Account", request);
 
             return true;
         }

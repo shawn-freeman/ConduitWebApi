@@ -15,7 +15,7 @@
           <Property Name="Active" Type="bit" Nullable="false" />
           <Property Name="Username" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="Email" Type="nvarchar(max)" />
+          <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <Function Name="changePasswordSP" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserID" Type="int" Mode="In" />
@@ -25,6 +25,10 @@
         <Function Name="checkLoginSP" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Username" Type="varchar(max)" Mode="In" />
           <Parameter Name="Password" Type="varchar(max)" Mode="In" />
+        </Function>
+        <Function Name="checkUserExists" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Username" Type="varchar(max)" Mode="In" />
+          <Parameter Name="Email" Type="varchar(max)" Mode="In" />
         </Function>
         <EntityContainer Name="DEVModelStoreContainer">
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
@@ -43,7 +47,7 @@
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <Property Name="Username" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
         </EntityType>
         <EntityContainer Name="CONDUIT_Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Users" EntityType="Self.User" />
@@ -55,6 +59,10 @@
             <Parameter Name="UserID" Mode="In" Type="Int32" />
             <Parameter Name="CurrentPassword" Mode="In" Type="String" />
             <Parameter Name="NewPassword" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="checkUserExists" ReturnType="Collection(Int32)">
+            <Parameter Name="Username" Mode="In" Type="String" />
+            <Parameter Name="Email" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="checkLoginSP_Result">
@@ -99,6 +107,7 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="changePasswordSP" FunctionName="DEVModel.Store.changePasswordSP" />
+          <FunctionImportMapping FunctionImportName="checkUserExists" FunctionName="DEVModel.Store.checkUserExists" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

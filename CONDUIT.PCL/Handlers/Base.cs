@@ -69,12 +69,21 @@ namespace CONDUIT.PCL.Handlers
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T">The type being passed to this post request as the obj parameter</typeparam>
+        /// <typeparam name="K">The type expecting back from the response</typeparam>
+        /// <param name="urlArguments"></param>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public async Task<K> Post<T, K>(string urlArguments, T obj)
         {
             var client = GetHttpClient();
 
             var content = new System.Net.Http.StringContent(JsonConvert.SerializeObject(obj), Encoding.UTF8, "application/json");
-            var response = await client.PostAsync(String.Format(_baseUrl + "{0}", urlArguments), content);
+            var uri = String.Format(_baseUrl + "{0}", urlArguments);
+            var response = await client.PostAsync(uri, content);
 
             var data = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<K>(data);
