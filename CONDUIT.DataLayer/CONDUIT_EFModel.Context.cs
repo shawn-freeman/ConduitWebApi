@@ -29,7 +29,7 @@ namespace CONDUIT.DataLayer
     
         public virtual DbSet<User> Users { get; set; }
     
-        public virtual ObjectResult<Nullable<int>> checkLoginSP(string username, string password)
+        public virtual ObjectResult<checkLoginSP_Result> checkLoginSP(string username, string password)
         {
             var usernameParameter = username != null ?
                 new ObjectParameter("Username", username) :
@@ -39,7 +39,37 @@ namespace CONDUIT.DataLayer
                 new ObjectParameter("Password", password) :
                 new ObjectParameter("Password", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("checkLoginSP", usernameParameter, passwordParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<checkLoginSP_Result>("checkLoginSP", usernameParameter, passwordParameter);
+        }
+    
+        public virtual int changePasswordSP(Nullable<int> userID, string currentPassword, string newPassword)
+        {
+            var userIDParameter = userID.HasValue ?
+                new ObjectParameter("UserID", userID) :
+                new ObjectParameter("UserID", typeof(int));
+    
+            var currentPasswordParameter = currentPassword != null ?
+                new ObjectParameter("CurrentPassword", currentPassword) :
+                new ObjectParameter("CurrentPassword", typeof(string));
+    
+            var newPasswordParameter = newPassword != null ?
+                new ObjectParameter("NewPassword", newPassword) :
+                new ObjectParameter("NewPassword", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("changePasswordSP", userIDParameter, currentPasswordParameter, newPasswordParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> checkUserExists(string username, string email)
+        {
+            var usernameParameter = username != null ?
+                new ObjectParameter("Username", username) :
+                new ObjectParameter("Username", typeof(string));
+    
+            var emailParameter = email != null ?
+                new ObjectParameter("Email", email) :
+                new ObjectParameter("Email", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("checkUserExists", usernameParameter, emailParameter);
         }
     }
 }

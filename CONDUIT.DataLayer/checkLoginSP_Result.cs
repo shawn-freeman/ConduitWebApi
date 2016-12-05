@@ -10,9 +10,8 @@
 namespace CONDUIT.DataLayer
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class User
+    public partial class checkLoginSP_Result
     {
         public int ID { get; set; }
         public System.DateTime Created { get; set; }

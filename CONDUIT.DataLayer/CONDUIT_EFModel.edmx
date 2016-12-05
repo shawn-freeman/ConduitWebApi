@@ -5,16 +5,9 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="DEVModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'DEV.dbo.Users' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Users">
           <Key>
             <PropertyRef Name="ID" />
-            <PropertyRef Name="Created" />
-            <PropertyRef Name="Modified" />
-            <PropertyRef Name="Active" />
-            <PropertyRef Name="Username" />
-            <PropertyRef Name="Password" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Created" Type="datetime" Nullable="false" />
@@ -22,22 +15,23 @@ warning 6002: The table/view 'DEV.dbo.Users' does not have a primary key defined
           <Property Name="Active" Type="bit" Nullable="false" />
           <Property Name="Username" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
+        <Function Name="changePasswordSP" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserID" Type="int" Mode="In" />
+          <Parameter Name="CurrentPassword" Type="varchar(max)" Mode="In" />
+          <Parameter Name="NewPassword" Type="varchar(max)" Mode="In" />
+        </Function>
         <Function Name="checkLoginSP" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Username" Type="varchar(max)" Mode="In" />
           <Parameter Name="Password" Type="varchar(max)" Mode="In" />
         </Function>
+        <Function Name="checkUserExists" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Username" Type="varchar(max)" Mode="In" />
+          <Parameter Name="Email" Type="varchar(max)" Mode="In" />
+        </Function>
         <EntityContainer Name="DEVModelStoreContainer">
-          <EntitySet Name="Users" EntityType="Self.Users" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Users].[ID] AS [ID], 
-    [Users].[Created] AS [Created], 
-    [Users].[Modified] AS [Modified], 
-    [Users].[Active] AS [Active], 
-    [Users].[Username] AS [Username], 
-    [Users].[Password] AS [Password]
-    FROM [dbo].[Users] AS [Users]</DefiningQuery>
-          </EntitySet>
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -46,11 +40,6 @@ warning 6002: The table/view 'DEV.dbo.Users' does not have a primary key defined
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="ID" />
-            <PropertyRef Name="Created" />
-            <PropertyRef Name="Modified" />
-            <PropertyRef Name="Active" />
-            <PropertyRef Name="Username" />
-            <PropertyRef Name="Password" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
@@ -58,14 +47,33 @@ warning 6002: The table/view 'DEV.dbo.Users' does not have a primary key defined
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <Property Name="Username" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
         </EntityType>
         <EntityContainer Name="CONDUIT_Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Users" EntityType="Self.User" />
-          <FunctionImport Name="checkLoginSP" ReturnType="Collection(Int32)">
+          <FunctionImport Name="checkLoginSP" ReturnType="Collection(DEVModel.checkLoginSP_Result)">
             <Parameter Name="Username" Mode="In" Type="String" />
             <Parameter Name="Password" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="changePasswordSP">
+            <Parameter Name="UserID" Mode="In" Type="Int32" />
+            <Parameter Name="CurrentPassword" Mode="In" Type="String" />
+            <Parameter Name="NewPassword" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="checkUserExists" ReturnType="Collection(Int32)">
+            <Parameter Name="Username" Mode="In" Type="String" />
+            <Parameter Name="Email" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
+        <ComplexType Name="checkLoginSP_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="DateTime" Name="Created" Nullable="false" Precision="23" />
+          <Property Type="DateTime" Name="Modified" Nullable="false" Precision="23" />
+          <Property Type="Boolean" Name="Active" Nullable="false" />
+          <Property Type="String" Name="Username" Nullable="false" />
+          <Property Type="String" Name="Password" Nullable="false" />
+          <Property Type="String" Name="Email" Nullable="false" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -75,6 +83,7 @@ warning 6002: The table/view 'DEV.dbo.Users' does not have a primary key defined
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="DEVModel.User">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Created" ColumnName="Created" />
                 <ScalarProperty Name="Modified" ColumnName="Modified" />
@@ -84,7 +93,21 @@ warning 6002: The table/view 'DEV.dbo.Users' does not have a primary key defined
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="checkLoginSP" FunctionName="DEVModel.Store.checkLoginSP" />
+          <FunctionImportMapping FunctionImportName="checkLoginSP" FunctionName="DEVModel.Store.checkLoginSP" >
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DEVModel.checkLoginSP_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Modified" ColumnName="Modified" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="changePasswordSP" FunctionName="DEVModel.Store.changePasswordSP" />
+          <FunctionImportMapping FunctionImportName="checkUserExists" FunctionName="DEVModel.Store.checkUserExists" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

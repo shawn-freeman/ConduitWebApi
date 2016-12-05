@@ -1,18 +1,17 @@
-﻿using System;
-using System.Linq;
-using System.Web.Http;
-using Newtonsoft.Json;
-
-using CONDUIT.DataLayer;
+﻿using CONDUIT.DataLayer;
 using CONDUIT.UnityCL.Transports.Account;
 using CONDUIT.UnityCL.Transports.ErrorHandling;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
-using CONDUIT.UnityCL.Helpers;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
 
 namespace CONDUIT.Controllers
 {
-    public class LoginController : ApiController
+    public class JsonController : ApiController
     {
         // GET api/<controller>
         [HttpGet]
@@ -22,7 +21,6 @@ namespace CONDUIT.Controllers
             string retJson;
             using (var entities = new CONDUIT_Entities())
             {
-                
                 try
                 {
                     var loginRequest = JsonConvert.DeserializeObject<LoginRequest>(obj);
@@ -44,6 +42,13 @@ namespace CONDUIT.Controllers
                     }
                     else
                     {
+                        var userInfo = new UserInfo()
+                        {
+                            UserId = -1,
+                            Username = string.Empty,
+                            Password = string.Empty,
+                            Email = string.Empty
+                        };
 
                         retResult = new ReturnResult<UserInfo>(null, "Could not find user.");
                         retJson = JsonConvert.SerializeObject(retResult);
@@ -51,9 +56,15 @@ namespace CONDUIT.Controllers
                 }
                 catch (Exception ex)
                 {
-
+                    var userInfo = new UserInfo()
+                    {
+                        UserId = -1,
+                        Username = string.Empty,
+                        Password = string.Empty,
+                        Email = string.Empty
+                    };
                     retResult = new ReturnResult<UserInfo>(null, ex.ToString());
-                    retJson = JsonConvert.SerializeObject(retResult);
+                    retJson = JsonConvert.SerializeObject(userInfo);
                 }
 
                 return retJson;
